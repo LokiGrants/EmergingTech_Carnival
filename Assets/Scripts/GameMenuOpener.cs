@@ -20,10 +20,12 @@ public class GameMenuOpener : MonoBehaviour
 
     public void StopCountDown()
     {
-        StopCoroutine(countdownCoroutine);
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
         countdownCoroutine = null;
     }
-
     IEnumerator CountToTurnOn()
     {
         yield return new WaitForSecondsRealtime(countdownTotalTime);
