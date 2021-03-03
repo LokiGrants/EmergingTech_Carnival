@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class BallThrowManager<T> : MonoBehaviour where T : BallThrowManager<T>
 {
+    #region Singleton
     public bool persistOnSceneLoad;
-
     private static T _instance;
 
     public static T Instance
@@ -40,4 +42,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
             DontDestroyOnLoad(gameObject);
         }
     }
+    #endregion
+
+    public int livesCount;
 }

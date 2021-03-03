@@ -9,6 +9,7 @@ TagManager:
   - projectile
   - FxTemporaire
   - HammerTime
+  - Basket
   layers:
   - Default
   - TransparentFX

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class WhackMole_Manager : Singleton<WhackMole_Manager>
+public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 {
-    public float timeOfGameplayInSeconds;
     public List<MoleController> moles;
     public float minTimeBetweenMole = 2f;
     public float maxTimeBetweenMole = 5f;
-    public float stepTime = 0.1f;
 
     public float mole_yPosAboveGround;
     public float mole_yPosUnderGround;
@@ -21,7 +19,7 @@ public class WhackMole_Manager : Singleton<WhackMole_Manager>
     private float timeForNextMole = 0;
 
     [ContextMenu("Start Whacka")]
-    void StartMinigame()
+    void StartWhacka()
     {
         whacks = 0;
 
@@ -35,29 +33,30 @@ public class WhackMole_Manager : Singleton<WhackMole_Manager>
         }
 
         Debug.Log("Give VR hammer to player here");
-        StartCoroutine(MiniGameController(timeOfGameplayInSeconds));
+        StartMinigame();
     }
 
-    IEnumerator MiniGameController(float totalGameTime)
+    protected override void BeforeYield(float totalGameTime)
     {
-        while (totalGameTime > 0)
+        Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
+        if (timeForNextMole <= 0)
         {
-            Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
-            if (timeForNextMole <= 0)
+            timeForNextMole = Mathf.FloorToInt(Random.Range(minTimeBetweenMole * 1000000, maxTimeBetweenMole * 1000000) / 1000000);
+            var moleSubset = moles.Where(x => !x.canNotPlay).ToList();
+            if (moleSubset.Count > 0)
             {
-                timeForNextMole = Mathf.FloorToInt(Random.Range(minTimeBetweenMole * 1000000, maxTimeBetweenMole * 1000000) / 1000000);
-                var moleSubset = moles.Where(x => !x.canNotPlay).ToList();
-                if (moleSubset.Count > 0)
-                {
-                    moleSubset[Mathf.FloorToInt(Random.Range(0, moleSubset.Count * 1000000) / 1000000)].MoveMole();
-                }
+                moleSubset[Mathf.FloorToInt(Random.Range(0, moleSubset.Count * 1000000) / 1000000)].MoveMole();
             }
-
-            yield return new WaitForSeconds(stepTime);
-            timeForNextMole -= stepTime;
-            totalGameTime -= stepTime;
         }
+    }
 
+    protected override void AfterYield(float totalGameTime)
+    {
+        timeForNextMole -= stepTime;
+    }
+
+    protected override void AfterWhile(float totalGameTime)
+    {
         Debug.Log("Total hits: " + whacks);
     }
 
