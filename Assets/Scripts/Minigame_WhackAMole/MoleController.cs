@@ -60,7 +60,6 @@ public class MoleController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "HammerTime")
         {
             StopAllCoroutines();

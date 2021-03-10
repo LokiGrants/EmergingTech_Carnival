@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class GameMenuOpener : MonoBehaviour
 {
     public GameObject canvas;
+    public Transform rightHand;
     public float countdownTotalTime = 1f;
+    public float cubeSize;
 
     private bool turnedOn;
     private Coroutine countdownCoroutine;
