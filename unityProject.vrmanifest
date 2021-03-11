@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.carnival.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "D:\\Git Projects\\2020_centennialjam_group6_repo\\EmergingTech_Carnival\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "E:\\Backup\\Desktop\\College\\4th Semester\\Emerging Technology\\EmergingTech_Carnival\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "Carnival [Testing]"
