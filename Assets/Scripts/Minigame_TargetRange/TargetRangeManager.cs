@@ -5,6 +5,7 @@ using UnityEngine;
 public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 {
     public List<Transform> spawnParents;
+
     private float score;
 
     [ContextMenu("Start Target Range")]
