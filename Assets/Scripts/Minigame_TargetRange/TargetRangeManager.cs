@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 {
-    public List<Transform> spawnParents;
+    public List<GameObject> targetList;
+    public GameObject prefabTarget;
+    public int howManyTargetsPerTime = 1;
     public Hand leftHand, rightHand;
     public ItemPackageSpawner itemPackageSpawnerBow;
     public GrabTypes grabTypeBow;
@@ -22,8 +25,15 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
         if (selectedHand == null)
             selectedHand = rightHand;
         HandBow();
+        for (int i = 0; i < howManyTargetsPerTime; i++)
+        {
+            var targetSubset = targetList.Where(x => !x.activeSelf).ToList();
+            if (targetSubset.Count > 0)
+            {
+                targetSubset[Mathf.FloorToInt(Random.Range(0, targetSubset.Count * 1000000) / 1000000)].SetActive(true);
+            }
+        }
         StartMinigame();
-        //Turn 4 on
     }
 
     void ChangeHand(Hand hand)
@@ -41,6 +51,14 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
         itemPackageSpawnerBow.CallTakeBackItem(selectedHand);
     }
 
+    void TurnOffTargets()
+    {
+        foreach (GameObject go in targetList.Where(x => x.activeSelf))
+        {
+            go.SetActive(false);
+        }
+    }
+
     protected override void BeforeYield(float totalGameTime)
     {
         Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
@@ -56,12 +74,17 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     {
         Debug.Log("Total hits: " + score);
         UnhandBow();
+        TurnOffTargets();
     }
 
     public void OnTargetHit()
     {
         score += 10;
         Debug.Log("At least it's hit");
-        //Turn another one on
+        var targetSubset = targetList.Where(x => !x.activeSelf).ToList();
+        if (targetSubset.Count > 0)
+        {
+            targetSubset[Mathf.FloorToInt(Random.Range(0, targetSubset.Count * 1000000) / 1000000)].SetActive(true);
+        }
     }
 }

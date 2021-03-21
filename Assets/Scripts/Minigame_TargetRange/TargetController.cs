@@ -13,8 +13,8 @@ public class TargetController : MonoBehaviour
     {
         if(other.tag == "projectile")
         {
-            Debug.Log("HIT");
-            Destroy(gameObject);
+            TargetRangeManager.Instance.OnTargetHit();
+            gameObject.SetActive(false);
         }
     }
 
