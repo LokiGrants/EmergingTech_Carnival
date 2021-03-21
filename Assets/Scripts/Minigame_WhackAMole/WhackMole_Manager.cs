@@ -26,7 +26,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     private void Start()
     {
-        //StartWhacka();
+        StartWhacka();
     }
 
     [ContextMenu("Start Whacka")]

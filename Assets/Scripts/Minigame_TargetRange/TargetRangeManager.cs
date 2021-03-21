@@ -16,6 +16,11 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     private float score;
     private Hand selectedHand;
 
+    private void Start()
+    {
+        StartTargetRange();
+    }
+
     [ContextMenu("Start Target Range")]
     void StartTargetRange()
     {
