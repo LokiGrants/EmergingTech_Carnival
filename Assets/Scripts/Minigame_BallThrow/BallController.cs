@@ -12,6 +12,21 @@ public class BallController : MonoBehaviour
         if (other.tag == "Basket")
         {
             BallThrowTestGame_Manager.Instance.OnBasketHit();
+        } else if (other.tag == "Minigame_Basket_BallDestroyer")
+        {
+            StopAllCoroutines();
+            Destroy(gameObject);
+            BallThrowTestGame_Manager.Instance.Respawn();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.tag == "Minigame_Basket_BallDestroyer")
+        {
+            StopAllCoroutines();
+            Destroy(gameObject);
+            BallThrowTestGame_Manager.Instance.Respawn();
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Valve.VR.InteractionSystem;
 
 public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 {
@@ -15,8 +16,18 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public float mole_minTimeUp;
     public float mole_maxTimeUp;
 
+    public Hand leftHand, rightHand;
+    public ItemPackageSpawner itemPackageSpawnerHammer;
+    public GrabTypes grabTypeHammer;
+
     private int whacks;
     private float timeForNextMole = 0;
+    private Hand selectedHand;
+
+    private void Start()
+    {
+        //StartWhacka();
+    }
 
     [ContextMenu("Start Whacka")]
     void StartWhacka()
@@ -32,8 +43,27 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
             mc.mole_maxTimeUp = mole_maxTimeUp;
         }
 
+        if (selectedHand == null)
+            selectedHand = rightHand;
+        HandHammer();
+
         Debug.Log("Give VR hammer to player here");
         StartMinigame();
+    }
+
+    void ChangeHand(Hand hand)
+    {
+        selectedHand = hand;
+    }
+
+    void HandHammer()
+    {
+        itemPackageSpawnerHammer.CallSpawnAndAttachObject(selectedHand, grabTypeHammer);
+    }
+
+    void UnhandHammer()
+    {
+        itemPackageSpawnerHammer.CallTakeBackItem(selectedHand);
     }
 
     protected override void BeforeYield(float totalGameTime)
@@ -63,5 +93,6 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public void OnMoleHit()
     {
         whacks += 1;
+        Debug.Log("At least it's hit");
     }
 }

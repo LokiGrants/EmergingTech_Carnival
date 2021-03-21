@@ -442,9 +442,10 @@ GameObject:
   - component: {fileID: 513036557}
   - component: {fileID: 513036556}
   - component: {fileID: 513036555}
+  - component: {fileID: 513036558}
   m_Layer: 0
   m_Name: Frontboard
-  m_TagString: Untagged
+  m_TagString: Minigame_Basket_BallDestroyer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -474,8 +475,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0.38758022}
+  m_Center: {x: 0, y: 0, z: 0.30621025}
 --- !u!23 &513036556
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -523,6 +524,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513036553}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &513036558
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513036553}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.92601454, z: 2.732352}
+  m_Center: {x: 0, y: -0.036992878, z: 0.8661868}
 --- !u!1 &531807100
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,11 +822,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   persistOnSceneLoad: 0
-  livesCount: 3
+  timeOfGameplayInSeconds: 30
+  stepTime: 0.1
   ballPrefab: {fileID: 4538023111419240485, guid: 489adefaac13fbc43a04ac6783ba4c85,
     type: 3}
   ballPosition: {fileID: 272650270}
-  timeForBallReset: 2
+  timeForBallReset: 10
 --- !u!4 &705130182
 Transform:
   m_ObjectHideFlags: 0
@@ -1202,7 +1217,7 @@ GameObject:
   - component: {fileID: 1273969486}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Minigame_Basket_BallDestroyer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1485,7 +1500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1554913786
 AudioListener:
   m_ObjectHideFlags: 0

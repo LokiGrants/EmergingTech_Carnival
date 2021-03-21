@@ -2020,7 +2020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poseEditorExpanded: 1
-  blendEditorExpanded: 0
+  blendEditorExpanded: 1
   poseNames:
   - longbowPose (MAIN)
   overridePreviewLeftHandPrefab: {fileID: 1000013348574242, guid: 638779290bce1af49b356f33dcc6fccf,

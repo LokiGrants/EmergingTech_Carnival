@@ -2,40 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallThrowTestGame_Manager : BallThrowManager<BallThrowTestGame_Manager>
+public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manager>
 {
     public GameObject ballPrefab;
     public Transform ballPosition;
     public float timeForBallReset;
 
-    protected int basketScore;
+    private int basketScore;
+    private bool gameOver = true;
 
     [ContextMenu("Start BallThrow")]
     void StartBallThrow()
     {
-        Debug.Log("Balls left " + livesCount);
         var newGameObject = Instantiate(ballPrefab, ballPosition);
         newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
+        gameOver = false;
+        StartMinigame();
     }
 
     public void Respawn()
     {
-        livesCount--;
-
-        if (livesCount > 0)
+        if (!gameOver)
         {
-            Debug.Log("Balls left " + livesCount);
             var newGameObject = Instantiate(ballPrefab, ballPosition);
             newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
-        } else
-        {
-            Debug.Log("<color=red>ZERO BALLS LEFT</color>");
         }
     }
 
     public void OnBasketHit()
     {
         basketScore += 100;
+    }
+
+    protected override void AfterWhile(float totalGameTime)
+    {
+        gameOver = true;
         Debug.Log("Basket Score " + basketScore);
     }
 }

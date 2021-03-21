@@ -180,6 +180,10 @@ namespace Valve.VR.InteractionSystem
 			}
 		}
 
+		public void CallTakeBackItem(Hand hand)
+        {
+			TakeBackItem(hand);
+		}
 
 		//-------------------------------------------------
 		private void TakeBackItem( Hand hand )
@@ -294,6 +298,10 @@ namespace Valve.VR.InteractionSystem
 			}
 		}
 
+		public void CallSpawnAndAttachObject(Hand hand, GrabTypes grabType)
+        {
+			SpawnAndAttachObject(hand, grabType);
+		}
 
 		//-------------------------------------------------
 		private void SpawnAndAttachObject( Hand hand, GrabTypes grabType )
