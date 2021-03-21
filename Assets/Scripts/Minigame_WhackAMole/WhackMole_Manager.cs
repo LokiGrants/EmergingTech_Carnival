@@ -93,6 +93,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public void OnMoleHit()
     {
         whacks += 1;
+        selectedHand.TriggerHapticPulse(1000);
         Debug.Log("At least it's hit");
     }
 }
