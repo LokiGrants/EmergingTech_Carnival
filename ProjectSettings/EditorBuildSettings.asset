@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Minigame_WhackAMole.unity
     guid: af518f2a98abd6b48a67cab2b222a2a3
+  - enabled: 0
+    path: Assets/Scenes/Minigame_BallThrow.unity
+    guid: 835649d2e0f57d94ab405f05ab9b1ba9
+  - enabled: 1
+    path: Assets/Scenes/Minigame_TargetRange.unity
+    guid: 78e2980d42824d64fa2e467569b4713d
   m_configObjects:
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: f4c68df42da820f42bda54f923e2ff09,
       type: 2}

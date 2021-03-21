@@ -11,6 +11,11 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     private int basketScore;
     private bool gameOver = true;
 
+    private void Start()
+    {
+        StartBallThrow();
+    }
+
     [ContextMenu("Start BallThrow")]
     void StartBallThrow()
     {
