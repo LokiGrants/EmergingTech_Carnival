@@ -955,8 +955,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1.9990001, y: 0}
+  m_SizeDelta: {x: -0.0019999743, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500146003
 MonoBehaviour:
@@ -1237,17 +1237,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 926850510}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &801375565
 MonoBehaviour:
@@ -2090,17 +2079,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 926850510}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 500146001}
         m_MethodName: SetActive
         m_Mode: 6
@@ -2843,7 +2821,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1807767506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7897a6ccb5f3bc04ea3811e9b8163ff6, type: 3}
+  m_Script: {fileID: 11500000, guid: c491be032062f5947a0c4aa08c28743d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1807767508
@@ -3078,7 +3056,7 @@ PrefabInstance:
     - target: {fileID: 3585391839394288185, guid: 98ffe4a05a64b984fb1cee18b79863a7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8908406855136561781, guid: 98ffe4a05a64b984fb1cee18b79863a7,
         type: 3}
