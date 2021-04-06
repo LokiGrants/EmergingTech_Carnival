@@ -10,6 +10,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 
     private int basketScore;
     private bool gameOver = true;
+    private GameObject currentBall;
 
     private void Start()
     {
@@ -19,8 +20,8 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     [ContextMenu("Start BallThrow")]
     void StartBallThrow()
     {
-        var newGameObject = Instantiate(ballPrefab, ballPosition);
-        newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
+        currentBall = Instantiate(ballPrefab, ballPosition);
+        currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;
         gameOver = false;
         StartMinigame();
     }
@@ -29,8 +30,8 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     {
         if (!gameOver)
         {
-            var newGameObject = Instantiate(ballPrefab, ballPosition);
-            newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
+            currentBall = Instantiate(ballPrefab, ballPosition);
+            currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;
         }
     }
 
@@ -43,5 +44,6 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     {
         gameOver = true;
         Debug.Log("Basket Score " + basketScore);
+        Destroy(currentBall);
     }
 }

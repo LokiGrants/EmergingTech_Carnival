@@ -298,9 +298,9 @@ namespace Valve.VR.InteractionSystem
 			}
 		}
 
-		public void CallSpawnAndAttachObject(Hand hand, GrabTypes grabType)
+		public GameObject CallSpawnAndAttachObject(Hand hand, GrabTypes grabType)
         {
-			SpawnAndAttachObject(hand, grabType);
+			return SpawnAndAttachObjectGO(hand, grabType);
 		}
 
 		//-------------------------------------------------
@@ -368,6 +368,74 @@ namespace Valve.VR.InteractionSystem
 				pickupEvent.Invoke();
 				CreatePreviewObject();
 			}
+		}
+
+		private GameObject SpawnAndAttachObjectGO(Hand hand, GrabTypes grabType)
+		{
+			if (hand.otherHand != null)
+			{
+				//If the other hand has this item package, take it back from the other hand
+				ItemPackage otherHandItemPackage = GetAttachedItemPackage(hand.otherHand);
+				if (otherHandItemPackage == itemPackage)
+				{
+					TakeBackItem(hand.otherHand);
+				}
+			}
+
+			if (showTriggerHint)
+			{
+				hand.HideGrabHint();
+			}
+
+			if (itemPackage.otherHandItemPrefab != null)
+			{
+				if (hand.otherHand.hoverLocked)
+				{
+					Debug.Log("<b>[SteamVR Interaction]</b> Not attaching objects because other hand is hoverlocked and we can't deliver both items.");
+					return null;
+				}
+			}
+
+			// if we're trying to spawn a one-handed item, remove one and two-handed items from this hand and two-handed items from both hands
+			if (itemPackage.packageType == ItemPackage.ItemPackageType.OneHanded)
+			{
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.OneHanded, hand);
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.TwoHanded, hand);
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.TwoHanded, hand.otherHand);
+			}
+
+			// if we're trying to spawn a two-handed item, remove one and two-handed items from both hands
+			if (itemPackage.packageType == ItemPackage.ItemPackageType.TwoHanded)
+			{
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.OneHanded, hand);
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.OneHanded, hand.otherHand);
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.TwoHanded, hand);
+				RemoveMatchingItemTypesFromHand(ItemPackage.ItemPackageType.TwoHanded, hand.otherHand);
+			}
+
+			spawnedItem = GameObject.Instantiate(itemPackage.itemPrefab);
+			spawnedItem.SetActive(true);
+			hand.AttachObject(spawnedItem, grabType, attachmentFlags);
+
+			if ((itemPackage.otherHandItemPrefab != null) && (hand.otherHand.isActive))
+			{
+				GameObject otherHandObjectToAttach = GameObject.Instantiate(itemPackage.otherHandItemPrefab);
+				otherHandObjectToAttach.SetActive(true);
+				hand.otherHand.AttachObject(otherHandObjectToAttach, grabType, attachmentFlags);
+			}
+
+			itemIsSpawned = true;
+
+			justPickedUpItem = true;
+
+			if (takeBackItem)
+			{
+				useFadedPreview = true;
+				pickupEvent.Invoke();
+				CreatePreviewObject();
+			}
+
+			return spawnedItem;
 		}
 	}
 }

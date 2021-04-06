@@ -11,6 +11,7 @@ TagManager:
   - HammerTime
   - Basket
   - Minigame_Basket_BallDestroyer
+  - SafeNet
   layers:
   - Default
   - TransparentFX

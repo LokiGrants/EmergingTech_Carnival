@@ -19,14 +19,17 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public Hand leftHand, rightHand;
     public ItemPackageSpawner itemPackageSpawnerHammer;
     public GrabTypes grabTypeHammer;
+    public float dissolveTime = .5f;
+    public float dissolveStepTime = .05f;
 
     private int whacks;
     private float timeForNextMole = 0;
     private Hand selectedHand;
+    private GameObject spawnedHammer;
 
     private void Start()
     {
-        StartWhacka();
+        //StartWhacka();
     }
 
     [ContextMenu("Start Whacka")]
@@ -47,7 +50,6 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
             selectedHand = rightHand;
         HandHammer();
 
-        Debug.Log("Give VR hammer to player here");
         StartMinigame();
     }
 
@@ -58,17 +60,66 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     void HandHammer()
     {
-        itemPackageSpawnerHammer.CallSpawnAndAttachObject(selectedHand, grabTypeHammer);
+        spawnedHammer = itemPackageSpawnerHammer.CallSpawnAndAttachObject(selectedHand, grabTypeHammer);
+        if (spawnedHammer != null)
+        {
+            StartCoroutine(HammerDissolve());
+        }
+    }
+
+    IEnumerator HammerDissolve(bool isDissolveOut = false)
+    {
+        float cutoffValue = 1f;
+
+        if (isDissolveOut)
+        {
+            cutoffValue = 0f;
+        }
+
+        List<Renderer> childRenderer = new List<Renderer>();
+        foreach (Transform child in spawnedHammer.transform)
+        {
+            childRenderer.Add(child.GetComponent<Renderer>());
+        }
+
+        if (isDissolveOut)
+        {
+            for (float f = 0; f <= dissolveTime; f += dissolveStepTime)
+            {
+                cutoffValue = f / dissolveTime;
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+
+            itemPackageSpawnerHammer.CallTakeBackItem(selectedHand);
+        } else
+        {
+            for (float f = 0; f <= dissolveTime + dissolveStepTime; f += dissolveStepTime)
+            {
+                cutoffValue = 1 - (f / dissolveTime);
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+        }
     }
 
     void UnhandHammer()
     {
-        itemPackageSpawnerHammer.CallTakeBackItem(selectedHand);
+        if (spawnedHammer != null)
+        {
+            StartCoroutine(HammerDissolve(true));
+        }
     }
 
     protected override void BeforeYield(float totalGameTime)
     {
-        Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
+        //Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
         if (timeForNextMole <= 0)
         {
             timeForNextMole = Mathf.FloorToInt(Random.Range(minTimeBetweenMole * 1000000, maxTimeBetweenMole * 1000000) / 1000000);
@@ -88,6 +139,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     protected override void AfterWhile(float totalGameTime)
     {
         Debug.Log("Total hits: " + whacks);
+        UnhandHammer();
     }
 
     public void OnMoleHit()
