@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Hammer
   packageType: 1
-  itemPrefab: {fileID: 4664207902668054503, guid: 2cf7a451ca87cb84e8f035488de0ffdc,
+  itemPrefab: {fileID: 8991414235150452521, guid: 811cbd7ce1d1de4448923f02cb70bfac,
     type: 3}
   otherHandItemPrefab: {fileID: 0}
   previewPrefab: {fileID: 0}

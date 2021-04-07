@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SimonSaysManager : MiniGameManager<SimonSaysManager>
 {
-    public List<GameObject> SimonButtons;
+    public List<GameObject> simonButtons;
+    public int startingAmount = 3;
 
+    private List<GameObject> selectedButtons;
     private int score;
-    private bool canTouch;
-    private GameObject pressedButton;
-
-    private bool isShowingOrder;
-    private Coroutine showOrderCoroutine;
+    private bool isGameOn;
 
     private void Start()
     {
@@ -21,18 +20,20 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
     [ContextMenu("Start Simon Says")]
     void StartSimon()
     {
+        selectedButtons = new List<GameObject>();
         score = 0;
+        isGameOn = true;
+
+        for (int i = 0; i < startingAmount; i++)
+        {
+            AddSelectedButton();
+        }
 
         StartMinigame();
     }
 
     protected override void BeforeYield(float totalGameTime)
     {
-        if (!canTouch && !isShowingOrder)
-        {
-            isShowingOrder = true;
-            showOrderCoroutine = StartCoroutine(ShowOrder());
-        }
         Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
     }
 
@@ -43,45 +44,32 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
     protected override void AfterWhile(float totalGameTime)
     {
         Debug.Log("Total hits: " + score);
-    }
-
-    IEnumerator ShowOrder()
-    {
-        yield return new WaitForSecondsRealtime(0.1f);
-    }
-
-    public void OnButtonDown(GameObject simonButton)
-    {
-        if (canTouch)
+        foreach(GameObject go in selectedButtons)
         {
-            pressedButton = simonButton;
+            go.GetComponentInChildren<Renderer>().material.color = new Color(1f, 1f, 1f);
+        }
+        selectedButtons.Clear();
+    }
+
+    public void OnButtonPressed(GameObject simonButton)
+    {
+        if (selectedButtons.Contains(simonButton))
+        {
+            score++;
+            selectedButtons.Remove(simonButton);
+            simonButton.GetComponentInChildren<Renderer>().material.color = new Color(1f, 1f, 1f);
+            AddSelectedButton();
         }
     }
 
-    public void OnButtonUp(GameObject simonButton)
+    private void AddSelectedButton()
     {
-        Debug.Log("Click click");
-        if (canTouch)
+        if (isGameOn)
         {
-            if (pressedButton == simonButton)
-            {
-                CheckOrder(simonButton);
-                //Check if button == to next in line and keep going until correct order. Then repeat lights, add a new button to the order.
-                //cooldown button?? Dunno if that is necessary but we want to avoid triggering it multiple times by mistake.
-            }
+            List<GameObject> simonButtonsMinusSelected = simonButtons.Except(selectedButtons).ToList();
+            GameObject go = simonButtonsMinusSelected[Random.Range(0, simonButtonsMinusSelected.Count)];
+            selectedButtons.Add(go);
+            go.GetComponentInChildren<Renderer>().material.color = new Color(.25f, .25f, 1f);
         }
-
-        pressedButton = null;
-    }
-
-    private void CheckOrder(GameObject simonButton)
-    {
-
-    }
-
-    public void OnOrderPerfect()
-    {
-        score += 1;
-        Debug.Log("At least it's hit");
     }
 }

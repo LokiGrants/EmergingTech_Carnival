@@ -76,11 +76,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
             cutoffValue = 0f;
         }
 
-        List<Renderer> childRenderer = new List<Renderer>();
-        foreach (Transform child in spawnedHammer.transform)
-        {
-            childRenderer.Add(child.GetComponent<Renderer>());
-        }
+        List<Renderer> childRenderer = spawnedHammer.GetComponentsInChildren<Renderer>().ToList();
 
         if (isDissolveOut)
         {
@@ -140,6 +136,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     {
         Debug.Log("Total hits: " + whacks);
         UnhandHammer();
+        //Hide clowns
     }
 
     public void OnMoleHit()

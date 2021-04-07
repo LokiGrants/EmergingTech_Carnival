@@ -7,18 +7,21 @@ using Valve.VR.InteractionSystem;
 public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 {
     public List<GameObject> targetList;
-    public GameObject prefabTarget;
     public int howManyTargetsPerTime = 1;
     public Hand leftHand, rightHand;
     public ItemPackageSpawner itemPackageSpawnerBow;
     public GrabTypes grabTypeBow;
 
+    public float dissolveTime = .5f;
+    public float dissolveStepTime = .05f;
+
     private float score;
     private Hand selectedHand;
+    private GameObject spawnedBow;
 
     private void Start()
     {
-        StartTargetRange();
+        //StartTargetRange();
     }
 
     [ContextMenu("Start Target Range")]
@@ -48,12 +51,58 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 
     void HandBow()
     {
-        itemPackageSpawnerBow.CallSpawnAndAttachObject(selectedHand, grabTypeBow);
+        spawnedBow = itemPackageSpawnerBow.CallSpawnAndAttachObject(selectedHand, grabTypeBow);
+        if (spawnedBow != null)
+        {
+            StartCoroutine(BowDissolve());
+        }
+    }
+
+    IEnumerator BowDissolve(bool isDissolveOut = false)
+    {
+        float cutoffValue = 1f;
+
+        if (isDissolveOut)
+        {
+            cutoffValue = 0f;
+        }
+
+        List<Renderer> childRenderer = spawnedBow.GetComponentsInChildren<Renderer>().ToList();
+
+        if (isDissolveOut)
+        {
+            for (float f = 0; f <= dissolveTime; f += dissolveStepTime)
+            {
+                cutoffValue = f / dissolveTime;
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+
+            itemPackageSpawnerBow.CallTakeBackItem(selectedHand);
+        }
+        else
+        {
+            for (float f = 0; f <= dissolveTime + dissolveStepTime; f += dissolveStepTime)
+            {
+                cutoffValue = 1 - (f / dissolveTime);
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+        }
     }
 
     void UnhandBow()
     {
-        itemPackageSpawnerBow.CallTakeBackItem(selectedHand);
+        if (spawnedBow != null)
+        {
+            StartCoroutine(BowDissolve(true));
+        }
     }
 
     void TurnOffTargets()
