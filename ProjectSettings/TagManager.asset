@@ -12,6 +12,7 @@ TagManager:
   - Basket
   - Minigame_Basket_BallDestroyer
   - SafeNet
+  - MenuButton
   layers:
   - Default
   - TransparentFX

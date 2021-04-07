@@ -6,6 +6,7 @@ using Valve.VR;
 public class GameMenuOpener : MonoBehaviour
 {
     public GameObject canvas;
+    public GameObject laserPointer;
     public Transform rightHand;
     public float countdownTotalTime = 1f;
     public float cubeSize;
@@ -34,11 +35,14 @@ public class GameMenuOpener : MonoBehaviour
         yield return new WaitForSecondsRealtime(countdownTotalTime);
         turnedOn = true;
         canvas.SetActive(true);
+        laserPointer.SetActive(true);
     }
 
     public void CloseWindow()
     {
+        StopCountDown();
         turnedOn = false;
         canvas.SetActive(false);
+        laserPointer.SetActive(false);
     }
 }

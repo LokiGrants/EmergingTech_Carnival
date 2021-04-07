@@ -7,30 +7,36 @@ using System.Linq;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
-//THIS SCRIPT IS FOR MULTIPLE HANDS
-
 public class LaserPointerHandler : MonoBehaviour
 {
-   // private SteamVR_LaserPointer laserPtrRef;
-    private List<SteamVR_LaserPointer> laserPtrRefs;
+    public SteamVR_LaserPointer laserPointer;
 
     private void Awake()
     {
-      //  laserPtrRef = FindObjectOfType<SteamVR_LaserPointer>();
-      //  laserPtrRef.PointerClick += PointerClickCallback;
+        if (laserPointer == null)
+            GetComponent<SteamVR_LaserPointer>();
 
-        laserPtrRefs = FindObjectsOfType<SteamVR_LaserPointer>().ToList(); //convert array to list
-     
-        foreach (SteamVR_LaserPointer x in laserPtrRefs)
-            x.PointerClick += PointerClickCallback;
-        
-        // alternative to doing foreach above:::
-        // laserPtrRefs.ForEach(x=>x.PointerClick += PointerClickCallback);
+        laserPointer.PointerClick += PointerClickCallback;
+        laserPointer.PointerIn += PointerInCallback;
+        laserPointer.PointerOut += PointerOutCallback;
     }
 
     public void PointerClickCallback(object sender, PointerEventArgs e)
     {
-        if (e.target.GetComponent<Button>() != null)
+        if (e.target.CompareTag("MenuButton"))
             e.target.GetComponent<Button>().onClick.Invoke(); //invoke the button we just clicked
+    }
+
+    public void PointerInCallback(object sender, PointerEventArgs e)
+    {
+        Debug.Log(e.target.name);
+        if (e.target.CompareTag("MenuButton"))
+            e.target.GetComponent<Button>().image.color = e.target.GetComponent<LaserButton>().highlightColor;
+    }
+
+    public void PointerOutCallback(object sender, PointerEventArgs e)
+    {
+        if (e.target.CompareTag("MenuButton"))
+            e.target.GetComponent<Button>().image.color = e.target.GetComponent<LaserButton>().defaultColor;
     }
 }

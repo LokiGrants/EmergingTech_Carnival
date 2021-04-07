@@ -57,12 +57,13 @@ public class ScoreManager : MonoBehaviour
     public bool unlockedBasket;
     public bool unlockedSimon;
 
-    public bool canBuyNextMinigame;
-
     private float lastPriceAsked;
+    private GameMenuManager gmm;
 
     void Start()
     {
+        gmm = GameMenuManager.Instance;
+
         if (PlayerPrefs.HasKey("CurrentScore"))
         {
             currentScore = PlayerPrefs.GetInt("CurrentScore");
@@ -112,7 +113,10 @@ public class ScoreManager : MonoBehaviour
 
         if (currentScore > lastPriceAsked)
         {
-            canBuyNextMinigame = true;
+            gmm.CanBuyMinigame();
+        } else
+        {
+            gmm.CanNotBuyMinigame();
         }
     }
 
@@ -141,7 +145,7 @@ public class ScoreManager : MonoBehaviour
 
         if (NextLevelPrice() > currentScore)
         {
-            canBuyNextMinigame = false;
+            gmm.CanNotBuyMinigame();
         }
     }
 
@@ -152,7 +156,7 @@ public class ScoreManager : MonoBehaviour
 
         if (currentScore > lastPriceAsked)
         {
-            canBuyNextMinigame = true;
+            gmm.CanBuyMinigame();
         }
     }
 
