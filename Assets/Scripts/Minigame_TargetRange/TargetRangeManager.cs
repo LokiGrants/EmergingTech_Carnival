@@ -15,7 +15,7 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     public float dissolveTime = .5f;
     public float dissolveStepTime = .05f;
 
-    private float score;
+    private int score;
     private Hand selectedHand;
     private GameObject spawnedBow;
 
@@ -129,6 +129,8 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
         Debug.Log("Total hits: " + score);
         UnhandBow();
         TurnOffTargets();
+
+        ScoreManager.Instance.AddCurrentScore(score * 10);
     }
 
     public void OnTargetHit()

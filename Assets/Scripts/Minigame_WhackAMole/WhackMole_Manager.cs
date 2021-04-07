@@ -22,7 +22,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public float dissolveTime = .5f;
     public float dissolveStepTime = .05f;
 
-    private int whacks;
+    private int score;
     private float timeForNextMole = 0;
     private Hand selectedHand;
     private GameObject spawnedHammer;
@@ -35,7 +35,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     [ContextMenu("Start Whacka")]
     void StartWhacka()
     {
-        whacks = 0;
+        score = 0;
 
         foreach (MoleController mc in moles)
         {
@@ -134,14 +134,16 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     protected override void AfterWhile(float totalGameTime)
     {
-        Debug.Log("Total hits: " + whacks);
+        Debug.Log("Total hits: " + score);
         UnhandHammer();
         //Hide clowns
+
+        ScoreManager.Instance.AddCurrentScore(score * 10);
     }
 
     public void OnMoleHit()
     {
-        whacks += 1;
+        score += 1;
         selectedHand.TriggerHapticPulse(1000);
         Debug.Log("At least it's hit");
     }

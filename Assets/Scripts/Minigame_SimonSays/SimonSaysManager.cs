@@ -49,6 +49,8 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
             go.GetComponentInChildren<Renderer>().material.color = new Color(1f, 1f, 1f);
         }
         selectedButtons.Clear();
+
+        ScoreManager.Instance.AddCurrentScore(score * 10);
     }
 
     public void OnButtonPressed(GameObject simonButton)
