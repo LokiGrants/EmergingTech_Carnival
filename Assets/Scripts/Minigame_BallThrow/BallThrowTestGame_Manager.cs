@@ -14,7 +14,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 
     private void Start()
     {
-        StartBallThrow();
+        //StartBallThrow();
     }
 
     [ContextMenu("Start BallThrow")]

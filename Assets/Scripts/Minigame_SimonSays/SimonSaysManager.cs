@@ -18,7 +18,7 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
     }
 
     [ContextMenu("Start Simon Says")]
-    void StartSimon()
+    public void StartSimon()
     {
         selectedButtons = new List<GameObject>();
         score = 0;
