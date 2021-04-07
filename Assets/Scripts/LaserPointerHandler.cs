@@ -7,6 +7,8 @@ using System.Linq;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
+//THIS SCRIPT IS FOR MULTIPLE HANDS
+
 public class LaserPointerHandler : MonoBehaviour
 {
    // private SteamVR_LaserPointer laserPtrRef;
