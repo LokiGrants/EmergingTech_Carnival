@@ -69,30 +69,60 @@ public class GameMenuManager : MonoBehaviour
                 if (!sm.unlockedWhacka)
                 {
                     sm.UnlockLevel(playerPrefsUnlockedName);
+                    playerTransform.position = minigameWhacka.position;
+                } else if (playerTransform.position == minigameWhacka.position)
+                {
+                    WhackMole_Manager.Instance.StartWhacka();
+                } else
+                {
+                    playerTransform.position = minigameWhacka.position;
                 }
-                playerTransform.position = minigameWhacka.position;
                 break;
             case "UnlockedTarget":
                 if (!sm.unlockedTarget)
                 {
                     sm.UnlockLevel(playerPrefsUnlockedName);
+                    playerTransform.position = minigameTarget.position;
                 }
-                playerTransform.position = minigameTarget.position;
+                else if (playerTransform.position == minigameTarget.position)
+                {
+                    TargetRangeManager.Instance.StartTargetRange();
+                }
+                else
+                {
+                    playerTransform.position = minigameTarget.position;
+                }
                 break;
             case "UnlockedBasket":
                 if (!sm.unlockedBasket)
                 {
                     sm.UnlockLevel(playerPrefsUnlockedName);
+                    playerTransform.position = minigameBasket.position;
                 }
-                playerTransform.position = minigameBasket.position;
+                else if (playerTransform.position == minigameBasket.position)
+                {
+                    BallThrowTestGame_Manager.Instance.StartBallThrow();
+                }
+                else
+                {
+                    playerTransform.position = minigameBasket.position;
+                }
                 break;
             case "UnlockedSimon":
             default:
                 if (!sm.unlockedSimon)
                 {
                     sm.UnlockLevel(playerPrefsUnlockedName);
+                    playerTransform.position = minigameSimon.position;
                 }
-                playerTransform.position = minigameSimon.position;
+                else if (playerTransform.position == minigameSimon.position)
+                {
+                    SimonSaysManager.Instance.StartSimon();
+                }
+                else
+                {
+                    playerTransform.position = minigameSimon.position;
+                }
                 break;
         }
     }

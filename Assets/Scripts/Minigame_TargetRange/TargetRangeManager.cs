@@ -25,7 +25,7 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     }
 
     [ContextMenu("Start Target Range")]
-    void StartTargetRange()
+    public void StartTargetRange()
     {
         score = 0;
 

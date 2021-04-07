@@ -33,7 +33,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     }
 
     [ContextMenu("Start Whacka")]
-    void StartWhacka()
+    public void StartWhacka()
     {
         score = 0;
 

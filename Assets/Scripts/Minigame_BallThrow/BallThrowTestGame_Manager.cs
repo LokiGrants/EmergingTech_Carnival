@@ -18,7 +18,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     }
 
     [ContextMenu("Start BallThrow")]
-    void StartBallThrow()
+    public void StartBallThrow()
     {
         currentBall = Instantiate(ballPrefab, ballPosition);
         currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;

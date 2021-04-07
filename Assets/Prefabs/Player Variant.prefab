@@ -306,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &840300216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,6 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &6473706966044689709
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,6 +906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8958485466356070052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1064,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  highlightColor: {r: 1, g: 0.73537093, b: 0.6650944, a: 1}
+  disabledColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 0.59607846}
 --- !u!1001 &1986344029999089565
 PrefabInstance:
   m_ObjectHideFlags: 0
