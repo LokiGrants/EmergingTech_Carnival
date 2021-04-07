@@ -1130,7 +1130,7 @@ PrefabInstance:
     - target: {fileID: 5664810216240362739, guid: 8c01a65d259643744a4a489c58502f89,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5664810216240362744, guid: 8c01a65d259643744a4a489c58502f89,
         type: 3}
@@ -1556,7 +1556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4863489095517323007
 Transform:
   m_ObjectHideFlags: 0
@@ -1604,7 +1604,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &4863489097148336689 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1199126620430273669, guid: 2a2b61eaf6c8267459baaab142c4f9fd,
@@ -1648,7 +1648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4863489097337946208
 Transform:
   m_ObjectHideFlags: 0
@@ -1680,7 +1680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &4863489097395256528 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 717032849417254390, guid: e3343bd54f8f8324caa97039725446d8,
@@ -1724,7 +1724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1001 &5372227021058836774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1740,7 +1740,7 @@ PrefabInstance:
     - target: {fileID: 717032849417254390, guid: e3343bd54f8f8324caa97039725446d8,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 717032849417254397, guid: e3343bd54f8f8324caa97039725446d8,
         type: 3}
@@ -2114,7 +2114,7 @@ PrefabInstance:
     - target: {fileID: 1199126620430273669, guid: 2a2b61eaf6c8267459baaab142c4f9fd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1199126620430273678, guid: 2a2b61eaf6c8267459baaab142c4f9fd,
         type: 3}
