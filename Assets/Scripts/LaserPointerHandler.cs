@@ -29,7 +29,6 @@ public class LaserPointerHandler : MonoBehaviour
 
     public void PointerInCallback(object sender, PointerEventArgs e)
     {
-        Debug.Log(e.target.name);
         if (e.target.CompareTag("MenuButton"))
             e.target.GetComponent<Button>().image.color = e.target.GetComponent<LaserButton>().highlightColor;
     }

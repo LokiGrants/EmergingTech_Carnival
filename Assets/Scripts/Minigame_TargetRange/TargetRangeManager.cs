@@ -12,6 +12,8 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     public ItemPackageSpawner itemPackageSpawnerBow;
     public GrabTypes grabTypeBow;
 
+    public int scoreValue;
+
     public float dissolveTime = .5f;
     public float dissolveStepTime = .05f;
 
@@ -130,14 +132,14 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
         UnhandBow();
         TurnOffTargets();
 
-        ScoreManager.Instance.AddCurrentScore(score * 10);
+        ScoreManager.Instance.AddCurrentScore(score);
     }
 
     public void OnTargetHit()
     {
-        score += 10;
-        Debug.Log("At least it's hit");
+        score += scoreValue;
         var targetSubset = targetList.Where(x => !x.activeSelf).ToList();
+        Debug.Log("targetList " + targetList.Count);
         if (targetSubset.Count > 0)
         {
             targetSubset[Mathf.FloorToInt(Random.Range(0, targetSubset.Count * 1000000) / 1000000)].SetActive(true);

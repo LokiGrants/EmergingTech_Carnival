@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,6 +43,8 @@ public class GameMenuManager : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
         }
+
+        Initialize();
     }
     #endregion
 
@@ -56,7 +59,13 @@ public class GameMenuManager : MonoBehaviour
     private bool canBuyNextMinigame;
     private ScoreManager sm;
 
-    private void Start()
+    [ContextMenu("delete keys")]
+    public void DeleteKeys()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
+    private void Initialize()
     {
         sm = ScoreManager.Instance;
     }
@@ -68,11 +77,20 @@ public class GameMenuManager : MonoBehaviour
             case "UnlockedWhacka":
                 if (!sm.unlockedWhacka)
                 {
-                    sm.UnlockLevel(playerPrefsUnlockedName);
-                    playerTransform.position = minigameWhacka.position;
+                    var button = buttonsMinigames.Where(x => x.name == playerPrefsUnlockedName);
+                    if (button != null)
+                    {
+                        MenuButtonController mbc = button.First().GetComponent<MenuButtonController>();
+                        mbc.OnClick();
+                        GameMenuOpener.Instance.confirmPurchaseButton.onClick.AddListener(() => {
+                            sm.UnlockLevel(playerPrefsUnlockedName);
+                            playerTransform.position = minigameWhacka.position;
+                        });
+                    }
                 } else if (playerTransform.position == minigameWhacka.position)
                 {
                     WhackMole_Manager.Instance.StartWhacka();
+                    GameMenuOpener.Instance.CloseWindow();
                 } else
                 {
                     playerTransform.position = minigameWhacka.position;
@@ -81,12 +99,21 @@ public class GameMenuManager : MonoBehaviour
             case "UnlockedTarget":
                 if (!sm.unlockedTarget)
                 {
-                    sm.UnlockLevel(playerPrefsUnlockedName);
-                    playerTransform.position = minigameTarget.position;
+                    var button = buttonsMinigames.Where(x => x.name == playerPrefsUnlockedName);
+                    if (button != null)
+                    {
+                        MenuButtonController mbc = button.First().GetComponent<MenuButtonController>();
+                        mbc.OnClick();
+                        GameMenuOpener.Instance.confirmPurchaseButton.onClick.AddListener(() => {
+                            sm.UnlockLevel(playerPrefsUnlockedName);
+                            playerTransform.position = minigameTarget.position;
+                        });
+                    }
                 }
                 else if (playerTransform.position == minigameTarget.position)
                 {
                     TargetRangeManager.Instance.StartTargetRange();
+                    GameMenuOpener.Instance.CloseWindow();
                 }
                 else
                 {
@@ -96,12 +123,21 @@ public class GameMenuManager : MonoBehaviour
             case "UnlockedBasket":
                 if (!sm.unlockedBasket)
                 {
-                    sm.UnlockLevel(playerPrefsUnlockedName);
-                    playerTransform.position = minigameBasket.position;
+                    var button = buttonsMinigames.Where(x => x.name == playerPrefsUnlockedName);
+                    if (button != null)
+                    {
+                        MenuButtonController mbc = button.First().GetComponent<MenuButtonController>();
+                        mbc.OnClick();
+                        GameMenuOpener.Instance.confirmPurchaseButton.onClick.AddListener(() => {
+                            sm.UnlockLevel(playerPrefsUnlockedName);
+                            playerTransform.position = minigameBasket.position;
+                        });
+                    }
                 }
                 else if (playerTransform.position == minigameBasket.position)
                 {
                     BallThrowTestGame_Manager.Instance.StartBallThrow();
+                    GameMenuOpener.Instance.CloseWindow();
                 }
                 else
                 {
@@ -112,12 +148,21 @@ public class GameMenuManager : MonoBehaviour
             default:
                 if (!sm.unlockedSimon)
                 {
-                    sm.UnlockLevel(playerPrefsUnlockedName);
-                    playerTransform.position = minigameSimon.position;
+                    var button = buttonsMinigames.Where(x => x.name == playerPrefsUnlockedName);
+                    if (button != null)
+                    {
+                        MenuButtonController mbc = button.First().GetComponent<MenuButtonController>();
+                        mbc.OnClick();
+                        GameMenuOpener.Instance.confirmPurchaseButton.onClick.AddListener(() => {
+                            sm.UnlockLevel(playerPrefsUnlockedName);
+                            playerTransform.position = minigameSimon.position;
+                        });
+                    }
                 }
                 else if (playerTransform.position == minigameSimon.position)
                 {
                     SimonSaysManager.Instance.StartSimon();
+                    GameMenuOpener.Instance.CloseWindow();
                 }
                 else
                 {
@@ -131,7 +176,7 @@ public class GameMenuManager : MonoBehaviour
     {
         foreach(GameObject go in buttonsMinigames)
         {
-            go.GetComponent<Button>().enabled = true;
+            go.GetComponent<BoxCollider>().enabled = true;
             go.GetComponent<Image>().color = go.GetComponent<LaserButton>().defaultColor;
         }
     }
@@ -140,8 +185,38 @@ public class GameMenuManager : MonoBehaviour
     {
         foreach (GameObject go in buttonsMinigames)
         {
-            go.GetComponent<Button>().enabled = false;
-            go.GetComponent<Image>().color = go.GetComponent<LaserButton>().disabledColor;
+            switch(go.GetComponent<LaserButton>().whichIsMe)
+            {
+                case LaserButton.WhichMinigame.WHACKA:
+                    if (!sm.unlockedWhacka)
+                    {
+                        go.GetComponent<BoxCollider>().enabled = false;
+                        go.GetComponent<Image>().color = go.GetComponent<LaserButton>().disabledColor;
+                    }
+                    break;
+                case LaserButton.WhichMinigame.TARGET:
+                    if (!sm.unlockedTarget)
+                    {
+                        go.GetComponent<BoxCollider>().enabled = false;
+                        go.GetComponent<Image>().color = go.GetComponent<LaserButton>().disabledColor;
+                    }
+                    break;
+                case LaserButton.WhichMinigame.BASKET:
+                    if (!sm.unlockedBasket)
+                    {
+                        go.GetComponent<BoxCollider>().enabled = false;
+                        go.GetComponent<Image>().color = go.GetComponent<LaserButton>().disabledColor;
+                    }
+                    break;
+                case LaserButton.WhichMinigame.SIMON:
+                default:
+                    if (!sm.unlockedSimon)
+                    {
+                        go.GetComponent<BoxCollider>().enabled = false;
+                        go.GetComponent<Image>().color = go.GetComponent<LaserButton>().disabledColor;
+                    }
+                    break;
+            }
         }
     }
 

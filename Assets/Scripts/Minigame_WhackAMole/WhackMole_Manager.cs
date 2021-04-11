@@ -9,6 +9,7 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public List<MoleController> moles;
     public float minTimeBetweenMole = 2f;
     public float maxTimeBetweenMole = 5f;
+    public int scoreValue;
 
     public float mole_yPosAboveGround;
     public float mole_yPosUnderGround;
@@ -138,12 +139,12 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
         UnhandHammer();
         //Hide clowns
 
-        ScoreManager.Instance.AddCurrentScore(score * 10);
+        ScoreManager.Instance.AddCurrentScore(score);
     }
 
     public void OnMoleHit()
     {
-        score += 1;
+        score += scoreValue;
         selectedHand.TriggerHapticPulse(1000);
         Debug.Log("At least it's hit");
     }

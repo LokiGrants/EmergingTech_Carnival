@@ -52,10 +52,10 @@ public class ScoreManager : MonoBehaviour
     public int highScoreBasket;
     public int highScoreSimon;
 
-    public bool unlockedWhacka;
-    public bool unlockedTarget;
-    public bool unlockedBasket;
-    public bool unlockedSimon;
+    public bool unlockedWhacka = false;
+    public bool unlockedTarget = false;
+    public bool unlockedBasket = false;
+    public bool unlockedSimon = false;
 
     private float lastPriceAsked;
     private GameMenuManager gmm;
@@ -68,6 +68,7 @@ public class ScoreManager : MonoBehaviour
         {
             currentScore = PlayerPrefs.GetInt("CurrentScore");
         }
+        GameMenuOpener.Instance.textScore.text = currentScore.ToString();
 
         if (PlayerPrefs.HasKey("HighScoreWhacka"))
         {
@@ -91,27 +92,27 @@ public class ScoreManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey("UnlockedWhacka"))
         {
-            unlockedWhacka = PlayerPrefs.GetString("UnlockedWhacka") == "true" ? true : false;
+            unlockedWhacka = PlayerPrefs.GetString("UnlockedWhacka") == "true";
         }
 
         if (PlayerPrefs.HasKey("UnlockedTarget"))
         {
-            unlockedTarget = PlayerPrefs.GetString("UnlockedTarget") == "true" ? true : false;
+            unlockedTarget = PlayerPrefs.GetString("UnlockedTarget") == "true";
         }
 
         if (PlayerPrefs.HasKey("UnlockedBasket"))
         {
-            unlockedBasket = PlayerPrefs.GetString("UnlockedBasket") == "true" ? true : false;
+            unlockedBasket = PlayerPrefs.GetString("UnlockedBasket") == "true";
         }
 
         if (PlayerPrefs.HasKey("UnlockedSimon"))
         {
-            unlockedSimon = PlayerPrefs.GetString("UnlockedSimon") == "true" ? true : false;
+            unlockedSimon = PlayerPrefs.GetString("UnlockedSimon") == "true";
         }
 
         NextLevelPrice();
 
-        if (currentScore > lastPriceAsked)
+        if (currentScore >= firstLevelPrice * lastPriceAsked)
         {
             gmm.CanBuyMinigame();
         } else
@@ -141,9 +142,10 @@ public class ScoreManager : MonoBehaviour
 
         currentScore -= (int)(firstLevelPrice * lastPriceAsked);
         PlayerPrefs.SetInt("CurrentScore", currentScore);
+        GameMenuOpener.Instance.textScore.text = currentScore.ToString();
         PlayerPrefs.SetString(playerPrefsUnlockedName, "true");
 
-        if (NextLevelPrice() > currentScore)
+        if (firstLevelPrice * NextLevelPrice() >= currentScore)
         {
             gmm.CanNotBuyMinigame();
         }
@@ -153,8 +155,9 @@ public class ScoreManager : MonoBehaviour
     {
         currentScore += score;
         PlayerPrefs.SetInt("CurrentScore", currentScore);
+        GameMenuOpener.Instance.textScore.text = currentScore.ToString();
 
-        if (currentScore > lastPriceAsked)
+        if (currentScore >= firstLevelPrice * NextLevelPrice())
         {
             gmm.CanBuyMinigame();
         }

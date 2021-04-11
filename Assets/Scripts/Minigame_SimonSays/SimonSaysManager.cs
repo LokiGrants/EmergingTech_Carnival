@@ -7,6 +7,7 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
 {
     public List<GameObject> simonButtons;
     public int startingAmount = 3;
+    public int scoreValue;
 
     private List<GameObject> selectedButtons;
     private int score;
@@ -50,17 +51,20 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
         }
         selectedButtons.Clear();
 
-        ScoreManager.Instance.AddCurrentScore(score * 10);
+        ScoreManager.Instance.AddCurrentScore(score);
     }
 
     public void OnButtonPressed(GameObject simonButton)
     {
-        if (selectedButtons.Contains(simonButton))
+        if (isGameOn)
         {
-            score++;
-            selectedButtons.Remove(simonButton);
-            simonButton.GetComponentInChildren<Renderer>().material.color = new Color(1f, 1f, 1f);
-            AddSelectedButton();
+            if (selectedButtons.Contains(simonButton))
+            {
+                score += scoreValue;
+                selectedButtons.Remove(simonButton);
+                simonButton.GetComponentInChildren<Renderer>().material.color = new Color(1f, 1f, 1f);
+                AddSelectedButton();
+            }
         }
     }
 

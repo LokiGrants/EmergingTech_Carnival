@@ -188,12 +188,13 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		private void TakeBackItem( Hand hand )
 		{
+			if (itemPackage.packageType == ItemPackage.ItemPackageType.TwoHanded)
+			{
+				RemoveMatchingItemsFromHandStack(itemPackage, hand.otherHand);
+			}
 			RemoveMatchingItemsFromHandStack( itemPackage, hand );
 
-			if ( itemPackage.packageType == ItemPackage.ItemPackageType.TwoHanded )
-			{
-				RemoveMatchingItemsFromHandStack( itemPackage, hand.otherHand );
-			}
+			
 		}
 
 
@@ -271,6 +272,7 @@ namespace Valve.VR.InteractionSystem
 				if ( packageReference != null )
 				{
 					ItemPackage attachedObjectItemPackage = packageReference.itemPackage;
+
 					if ( ( attachedObjectItemPackage != null ) && ( attachedObjectItemPackage == package ) )
 					{
 						GameObject detachedItem = hand.AttachedObjects[i].attachedObject;

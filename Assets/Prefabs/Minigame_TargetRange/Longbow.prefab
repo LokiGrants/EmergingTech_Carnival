@@ -1912,8 +1912,9 @@ MonoBehaviour:
   nockTransform: {fileID: 471206}
   nockRestTransform: {fileID: 449820}
   autoSpawnArrowHand: 1
-  arrowHandItemPackage: {fileID: 0}
-  arrowHandPrefab: {fileID: 187848, guid: d410d7126dd411c4ea651fc94eae9202, type: 3}
+  arrowHandItemPackage: {fileID: 11450054, guid: 94906609998b91846b9738f4e8c9f604,
+    type: 3}
+  arrowHandPrefab: {fileID: 187848, guid: b1f25c04b7140594cad0d0b7cb07ca1d, type: 3}
   nocked: 0
   pulled: 0
   arrowMinVelocity: 3
@@ -1936,7 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57468e6cbae21894fa42c90413c294ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPackage: {fileID: 11450054, guid: 98a3ad29136d5c04f8a025adf1cbd704, type: 3}
+  itemPackage: {fileID: 11450054, guid: 94906609998b91846b9738f4e8c9f604, type: 3}
 --- !u!114 &11441090
 MonoBehaviour:
   m_ObjectHideFlags: 0

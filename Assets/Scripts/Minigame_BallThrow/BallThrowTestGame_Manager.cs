@@ -6,6 +6,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 {
     public GameObject ballPrefab;
     public Transform ballPosition;
+    public int scoreValue;
     public float timeForBallReset;
 
     private int score;
@@ -37,7 +38,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 
     public void OnBasketHit()
     {
-        score++;
+        score += scoreValue;
     }
 
     protected override void AfterWhile(float totalGameTime)
@@ -46,6 +47,6 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
         Debug.Log("Basket Score " + score);
         Destroy(currentBall);
 
-        ScoreManager.Instance.AddCurrentScore(score * 10);
+        ScoreManager.Instance.AddCurrentScore(score);
     }
 }
