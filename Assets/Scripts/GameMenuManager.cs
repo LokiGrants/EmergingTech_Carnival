@@ -57,6 +57,7 @@ public class GameMenuManager : MonoBehaviour
     public List<GameObject> buttonsMinigames;
 
     private bool canBuyNextMinigame;
+    private bool isPlayingMinigame;
     private ScoreManager sm;
 
     [ContextMenu("delete keys")]
@@ -68,6 +69,21 @@ public class GameMenuManager : MonoBehaviour
     private void Initialize()
     {
         sm = ScoreManager.Instance;
+    }
+
+    public bool IsPlayingMinigame()
+    {
+        return isPlayingMinigame;
+    }
+
+    public void MinigameHasStarted()
+    {
+        isPlayingMinigame = true;
+    }
+
+    public void MinigameHasEnded()
+    {
+        isPlayingMinigame = false;
     }
 
     public void BuyOrTeleportMinigame(string playerPrefsUnlockedName)

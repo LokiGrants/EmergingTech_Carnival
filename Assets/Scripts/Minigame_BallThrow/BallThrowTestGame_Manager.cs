@@ -6,6 +6,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 {
     public GameObject ballPrefab;
     public Transform ballPosition;
+    public string musicToPlay;
     public int scoreValue;
     public float timeForBallReset;
 
@@ -21,6 +22,14 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     [ContextMenu("Start BallThrow")]
     public void StartBallThrow()
     {
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
         currentBall = Instantiate(ballPrefab, ballPosition);
         currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;
         gameOver = false;
@@ -43,10 +52,15 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 
     protected override void AfterWhile(float totalGameTime)
     {
+        GameMenuManager.Instance.MinigameHasEnded();
+
         gameOver = true;
         Debug.Log("Basket Score " + score);
         Destroy(currentBall);
 
-        ScoreManager.Instance.AddCurrentScore(score);
+        ScoreManager.Instance.AddCurrentScore(score); 
+        
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 }

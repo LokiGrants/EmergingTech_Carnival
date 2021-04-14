@@ -6,6 +6,7 @@ using UnityEngine;
 public class SimonSaysManager : MiniGameManager<SimonSaysManager>
 {
     public List<GameObject> simonButtons;
+    public string musicToPlay;
     public int startingAmount = 3;
     public int scoreValue;
 
@@ -21,6 +22,14 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
     [ContextMenu("Start Simon Says")]
     public void StartSimon()
     {
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
         selectedButtons = new List<GameObject>();
         score = 0;
         isGameOn = true;
@@ -44,6 +53,8 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
 
     protected override void AfterWhile(float totalGameTime)
     {
+        GameMenuManager.Instance.MinigameHasEnded();
+
         Debug.Log("Total hits: " + score);
         foreach(GameObject go in selectedButtons)
         {
@@ -52,6 +63,9 @@ public class SimonSaysManager : MiniGameManager<SimonSaysManager>
         selectedButtons.Clear();
 
         ScoreManager.Instance.AddCurrentScore(score);
+
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 
     public void OnButtonPressed(GameObject simonButton)

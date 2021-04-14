@@ -7,7 +7,8 @@ using Valve.VR.InteractionSystem;
 public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 {
     public List<GameObject> targetList;
-    public int howManyTargetsPerTime = 1;
+    public int howManyTargetsPerTime = 1; 
+    public string musicToPlay;
     public Hand leftHand, rightHand;
     public ItemPackageSpawner itemPackageSpawnerBow;
     public GrabTypes grabTypeBow;
@@ -29,6 +30,14 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
     [ContextMenu("Start Target Range")]
     public void StartTargetRange()
     {
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
         score = 0;
 
         Debug.Log("Give VR bow to player here");
@@ -128,11 +137,16 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 
     protected override void AfterWhile(float totalGameTime)
     {
+        GameMenuManager.Instance.MinigameHasEnded();
+
         Debug.Log("Total hits: " + score);
         UnhandBow();
         TurnOffTargets();
 
         ScoreManager.Instance.AddCurrentScore(score);
+
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 
     public void OnTargetHit()

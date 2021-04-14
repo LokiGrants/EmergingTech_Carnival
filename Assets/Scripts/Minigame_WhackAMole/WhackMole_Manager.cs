@@ -7,6 +7,7 @@ using Valve.VR.InteractionSystem;
 public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 {
     public List<MoleController> moles;
+    public string musicToPlay;
     public float minTimeBetweenMole = 2f;
     public float maxTimeBetweenMole = 5f;
     public int scoreValue;
@@ -36,6 +37,14 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     [ContextMenu("Start Whacka")]
     public void StartWhacka()
     {
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
         score = 0;
 
         foreach (MoleController mc in moles)
@@ -135,11 +144,16 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     protected override void AfterWhile(float totalGameTime)
     {
+        GameMenuManager.Instance.MinigameHasEnded();
+
         Debug.Log("Total hits: " + score);
         UnhandHammer();
         //Hide clowns
 
         ScoreManager.Instance.AddCurrentScore(score);
+
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 
     public void OnMoleHit()

@@ -6,7 +6,57 @@ ModelImporter:
   - first:
       74: -3999578356269874737
     second: Cube|CubeAction
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 78b77e95368a79f4782c99bd01d7b056, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cd
+    second: {fileID: 2100000, guid: 0fda8086d93ba7244b01b44b8f685c1f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cd.001
+    second: {fileID: 2100000, guid: 1e533baf1d40cbf4c8ed0f9bf7e10241, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gramophone base color
+    second: {fileID: 2100000, guid: b6863f151b2accb458a24b662d474573, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle metal
+    second: {fileID: 2100000, guid: 9553ecad139eebe41a6e0e6352505fe7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle metal.001
+    second: {fileID: 2100000, guid: 8511354c1409c8b4bbc4d41ffef6caac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle metal.002
+    second: {fileID: 2100000, guid: 7e186f15c02054a4080888a537e03732, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle metal.003
+    second: {fileID: 2100000, guid: b0df102243c9b1f4c8bb60120e57909b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle metal.004
+    second: {fileID: 2100000, guid: ce3525dfb5f27f943b4ead087fd755f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: transparent
+    second: {fileID: 2100000, guid: d6b401a8b7c24d049a11c8fbd04d831e, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
