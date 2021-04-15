@@ -127,8 +127,8 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 
     protected override void BeforeYield(float totalGameTime)
     {
-        Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
-        
+        //Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
+        GameMenuManager.Instance.textAnimation.ChangeText(Mathf.Floor(totalGameTime).ToString("00"));
     }
 
     protected override void AfterYield(float totalGameTime)

@@ -54,6 +54,11 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
         score += scoreValue;
     }
 
+    protected override void BeforeYield(float totalGameTime)
+    {
+        GameMenuManager.Instance.textAnimation.ChangeText(Mathf.Floor(totalGameTime).ToString("00"));
+    }
+
     protected override void AfterWhile(float totalGameTime)
     {
         GameMenuManager.Instance.MinigameHasEnded();

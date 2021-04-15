@@ -54,6 +54,8 @@ public class GameMenuManager : MonoBehaviour
     public Transform minigameTarget;
     public Transform minigameSimon;
 
+    public TextAnimationCounter textAnimation;
+
     public List<GameObject> buttonsMinigames;
 
     private bool canBuyNextMinigame;
@@ -79,11 +81,13 @@ public class GameMenuManager : MonoBehaviour
     public void MinigameHasStarted()
     {
         isPlayingMinigame = true;
+        textAnimation.MinigameStart();
     }
 
     public void MinigameHasEnded()
     {
         isPlayingMinigame = false;
+        StartCoroutine(textAnimation.EndAnimation());
     }
 
     public void BuyOrTeleportMinigame(string playerPrefsUnlockedName)

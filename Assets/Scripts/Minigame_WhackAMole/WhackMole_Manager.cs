@@ -127,7 +127,8 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     protected override void BeforeYield(float totalGameTime)
     {
-        //Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
+        GameMenuManager.Instance.textAnimation.ChangeText(Mathf.Floor(totalGameTime).ToString("00"));
+
         if (timeForNextMole <= 0)
         {
             timeForNextMole = Mathf.FloorToInt(Random.Range(minTimeBetweenMole * 1000000, maxTimeBetweenMole * 1000000) / 1000000);
