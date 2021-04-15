@@ -67,8 +67,8 @@ public class MoleController : MonoBehaviour
             canNotPlay = false;
             //Particles
             //Insta move down
+            WhackMole_Manager.Instance.OnMoleHit(transform);
             transform.position = new Vector3(transform.position.x, mole_yPosUnderGround, transform.position.z);
-            WhackMole_Manager.Instance.OnMoleHit();
         }
     }
 }

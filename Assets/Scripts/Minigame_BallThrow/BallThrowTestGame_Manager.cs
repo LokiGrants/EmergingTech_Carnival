@@ -6,6 +6,7 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 {
     public GameObject ballPrefab;
     public Transform ballPosition;
+    public GameObject animationHitPrefab;
     public string musicToPlay;
     public int scoreValue;
     public float timeForBallReset;
@@ -47,6 +48,9 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 
     public void OnBasketHit()
     {
+        GameObject go = Instantiate(animationHitPrefab, currentBall.transform.position, Quaternion.identity);
+        go.GetComponentInChildren<AnimationDataAndController>().ScoreValueChange(scoreValue.ToString());
+
         score += scoreValue;
     }
 

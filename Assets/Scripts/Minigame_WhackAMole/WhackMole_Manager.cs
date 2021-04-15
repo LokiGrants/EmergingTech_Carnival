@@ -7,6 +7,8 @@ using Valve.VR.InteractionSystem;
 public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 {
     public List<MoleController> moles;
+    public GameObject animationHitPrefab;
+    public float positionCorrectionAnimation;
     public string musicToPlay;
     public float minTimeBetweenMole = 2f;
     public float maxTimeBetweenMole = 5f;
@@ -156,8 +158,12 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
         AudioManager.instance.StopSound(musicToPlay);
     }
 
-    public void OnMoleHit()
+    public void OnMoleHit(Transform hitObject)
     {
+        Vector3 newPos = new Vector3(hitObject.position.x, hitObject.position.y + positionCorrectionAnimation, hitObject.position.z);
+        GameObject go = Instantiate(animationHitPrefab, newPos, Quaternion.identity);
+        go.GetComponentInChildren<AnimationDataAndController>().ScoreValueChange(scoreValue.ToString());
+
         score += scoreValue;
         selectedHand.TriggerHapticPulse(1000);
         Debug.Log("At least it's hit");

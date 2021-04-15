@@ -7,6 +7,7 @@ using Valve.VR.InteractionSystem;
 public class TargetRangeManager : MiniGameManager<TargetRangeManager>
 {
     public List<GameObject> targetList;
+    public GameObject animationHitPrefab;
     public int howManyTargetsPerTime = 1; 
     public string musicToPlay;
     public Hand leftHand, rightHand;
@@ -149,8 +150,11 @@ public class TargetRangeManager : MiniGameManager<TargetRangeManager>
         AudioManager.instance.StopSound(musicToPlay);
     }
 
-    public void OnTargetHit()
+    public void OnTargetHit(Transform hitObject)
     {
+        GameObject go = Instantiate(animationHitPrefab, hitObject.position, Quaternion.identity);
+        go.GetComponentInChildren<AnimationDataAndController>().ScoreValueChange(scoreValue.ToString());
+
         score += scoreValue;
         var targetSubset = targetList.Where(x => !x.activeSelf).ToList();
         Debug.Log("targetList " + targetList.Count);
