@@ -7,8 +7,12 @@ using Valve.VR.InteractionSystem;
 public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 {
     public List<MoleController> moles;
+    public GameObject animationHitPrefab;
+    public float positionCorrectionAnimation;
+    public string musicToPlay;
     public float minTimeBetweenMole = 2f;
     public float maxTimeBetweenMole = 5f;
+    public int scoreValue;
 
     public float mole_yPosAboveGround;
     public float mole_yPosUnderGround;
@@ -19,20 +23,31 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
     public Hand leftHand, rightHand;
     public ItemPackageSpawner itemPackageSpawnerHammer;
     public GrabTypes grabTypeHammer;
+    public float dissolveTime = .5f;
+    public float dissolveStepTime = .05f;
 
-    private int whacks;
+    private int score;
     private float timeForNextMole = 0;
     private Hand selectedHand;
+    private GameObject spawnedHammer;
 
     private void Start()
     {
-        StartWhacka();
+        //StartWhacka();
     }
 
     [ContextMenu("Start Whacka")]
-    void StartWhacka()
+    public void StartWhacka()
     {
-        whacks = 0;
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
+        score = 0;
 
         foreach (MoleController mc in moles)
         {
@@ -47,7 +62,6 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
             selectedHand = rightHand;
         HandHammer();
 
-        Debug.Log("Give VR hammer to player here");
         StartMinigame();
     }
 
@@ -58,17 +72,63 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     void HandHammer()
     {
-        itemPackageSpawnerHammer.CallSpawnAndAttachObject(selectedHand, grabTypeHammer);
+        spawnedHammer = itemPackageSpawnerHammer.CallSpawnAndAttachObject(selectedHand, grabTypeHammer);
+        if (spawnedHammer != null)
+        {
+            StartCoroutine(HammerDissolve());
+        }
+    }
+
+    IEnumerator HammerDissolve(bool isDissolveOut = false)
+    {
+        float cutoffValue = 1f;
+
+        if (isDissolveOut)
+        {
+            cutoffValue = 0f;
+        }
+
+        List<Renderer> childRenderer = spawnedHammer.GetComponentsInChildren<Renderer>().ToList();
+
+        if (isDissolveOut)
+        {
+            for (float f = 0; f <= dissolveTime; f += dissolveStepTime)
+            {
+                cutoffValue = f / dissolveTime;
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+
+            itemPackageSpawnerHammer.CallTakeBackItem(selectedHand);
+        } else
+        {
+            for (float f = 0; f <= dissolveTime + dissolveStepTime; f += dissolveStepTime)
+            {
+                cutoffValue = 1 - (f / dissolveTime);
+                foreach (Renderer r in childRenderer)
+                {
+                    r.material.SetFloat("_Cutoff", cutoffValue);
+                }
+                yield return new WaitForSeconds(dissolveStepTime);
+            }
+        }
     }
 
     void UnhandHammer()
     {
-        itemPackageSpawnerHammer.CallTakeBackItem(selectedHand);
+        if (spawnedHammer != null)
+        {
+            StartCoroutine(HammerDissolve(true));
+        }
     }
 
     protected override void BeforeYield(float totalGameTime)
     {
-        Debug.Log("Time Left " + Mathf.Floor(totalGameTime));
+        GameMenuManager.Instance.textAnimation.ChangeText(Mathf.Floor(totalGameTime).ToString("00"));
+
         if (timeForNextMole <= 0)
         {
             timeForNextMole = Mathf.FloorToInt(Random.Range(minTimeBetweenMole * 1000000, maxTimeBetweenMole * 1000000) / 1000000);
@@ -87,12 +147,25 @@ public class WhackMole_Manager : MiniGameManager<WhackMole_Manager>
 
     protected override void AfterWhile(float totalGameTime)
     {
-        Debug.Log("Total hits: " + whacks);
+        GameMenuManager.Instance.MinigameHasEnded();
+
+        Debug.Log("Total hits: " + score);
+        UnhandHammer();
+        //Hide clowns
+
+        ScoreManager.Instance.AddCurrentScore(score);
+
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 
-    public void OnMoleHit()
+    public void OnMoleHit(Transform hitObject)
     {
-        whacks += 1;
+        Vector3 newPos = new Vector3(hitObject.position.x, hitObject.position.y + positionCorrectionAnimation, hitObject.position.z);
+        GameObject go = Instantiate(animationHitPrefab, newPos, Quaternion.identity);
+        go.GetComponentInChildren<AnimationDataAndController>().ScoreValueChange(scoreValue.ToString());
+
+        score += scoreValue;
         selectedHand.TriggerHapticPulse(1000);
         Debug.Log("At least it's hit");
     }

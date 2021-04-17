@@ -6,21 +6,33 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
 {
     public GameObject ballPrefab;
     public Transform ballPosition;
+    public GameObject animationHitPrefab;
+    public string musicToPlay;
+    public int scoreValue;
     public float timeForBallReset;
 
-    private int basketScore;
+    private int score;
     private bool gameOver = true;
+    private GameObject currentBall;
 
     private void Start()
     {
-        StartBallThrow();
+        //StartBallThrow();
     }
 
     [ContextMenu("Start BallThrow")]
-    void StartBallThrow()
+    public void StartBallThrow()
     {
-        var newGameObject = Instantiate(ballPrefab, ballPosition);
-        newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
+        if (GameMenuManager.Instance.IsPlayingMinigame())
+            return;
+
+        GameMenuManager.Instance.MinigameHasStarted();
+
+        AudioManager.instance.PauseSound();
+        AudioManager.instance.PlaySound(musicToPlay);
+
+        currentBall = Instantiate(ballPrefab, ballPosition);
+        currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;
         gameOver = false;
         StartMinigame();
     }
@@ -29,19 +41,35 @@ public class BallThrowTestGame_Manager : MiniGameManager<BallThrowTestGame_Manag
     {
         if (!gameOver)
         {
-            var newGameObject = Instantiate(ballPrefab, ballPosition);
-            newGameObject.GetComponent<BallController>().timeForReset = timeForBallReset;
+            currentBall = Instantiate(ballPrefab, ballPosition);
+            currentBall.GetComponent<BallController>().timeForReset = timeForBallReset;
         }
     }
 
     public void OnBasketHit()
     {
-        basketScore += 100;
+        GameObject go = Instantiate(animationHitPrefab, currentBall.transform.position, Quaternion.identity);
+        go.GetComponentInChildren<AnimationDataAndController>().ScoreValueChange(scoreValue.ToString());
+
+        score += scoreValue;
+    }
+
+    protected override void BeforeYield(float totalGameTime)
+    {
+        GameMenuManager.Instance.textAnimation.ChangeText(Mathf.Floor(totalGameTime).ToString("00"));
     }
 
     protected override void AfterWhile(float totalGameTime)
     {
+        GameMenuManager.Instance.MinigameHasEnded();
+
         gameOver = true;
-        Debug.Log("Basket Score " + basketScore);
+        Debug.Log("Basket Score " + score);
+        Destroy(currentBall);
+
+        ScoreManager.Instance.AddCurrentScore(score); 
+        
+        AudioManager.instance.UnpauseSound();
+        AudioManager.instance.StopSound(musicToPlay);
     }
 }

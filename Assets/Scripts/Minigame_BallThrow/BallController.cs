@@ -7,6 +7,8 @@ public class BallController : MonoBehaviour
     [HideInInspector]
     public float timeForReset = 5f;
 
+    private Coroutine resetCoroutine;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Basket")
@@ -24,15 +26,20 @@ public class BallController : MonoBehaviour
     {
         if (collision.transform.tag == "Minigame_Basket_BallDestroyer")
         {
-            StopAllCoroutines();
+            if (resetCoroutine != null)
+                StopCoroutine(resetCoroutine);
             Destroy(gameObject);
             BallThrowTestGame_Manager.Instance.Respawn();
+        } else if (collision.transform.tag == "SafeNet")
+        {
+            if (resetCoroutine != null)
+                StopCoroutine(resetCoroutine);
         }
     }
 
     public void OnBallReleased()
     {
-        StartCoroutine(ResetAfterDelay());
+        resetCoroutine = StartCoroutine(ResetAfterDelay());
     }
 
     IEnumerator ResetAfterDelay()

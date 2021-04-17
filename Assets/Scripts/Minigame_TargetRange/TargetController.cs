@@ -13,8 +13,8 @@ public class TargetController : MonoBehaviour
     {
         if(other.tag == "projectile")
         {
-            TargetRangeManager.Instance.OnTargetHit();
-            gameObject.SetActive(false);
+            TargetRangeManager.Instance.OnTargetHit(transform);
+            transform.parent.gameObject.SetActive(false);
         }
     }
 
